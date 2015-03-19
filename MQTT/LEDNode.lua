@@ -20,6 +20,6 @@ end)
 m:connect("192.168.2.2", 1883, 0, function(conn) print("connected") end)
 
 
-tmr.alarm(1,1000,0,function() m:subscribe("reed/#",0, function(conn) print("subscribe success") end) end)
+tmr.alarm(2,1000,0,function() m:subscribe("reed/#",0, function(conn) print("subscribe success") end) end)
 
 

@@ -4,26 +4,29 @@ gpio.mode(5,gpio.INT,gpio.PULLUP)
 gpio.mode(7,gpio.INT,gpio.PULLUP)
 
 m = mqtt.Client("ESP8266.1", 120, "user", "password")
-
-m:lwt("/lwt", "ESP8266.1 offline", 0, 0)
-
-m:on("connect", function(con) print ("connected") end)
-m:on("offline", function(con) print ("offline") end)
-
-m:on("message", function(conn, topic, data) 
-  print(topic .. ":" ) 
-  if data ~= nil then
-    print(data)
-  end
-end)
-
 m:connect("192.168.2.2", 1883, 0, function(conn) print("connected") end)
 
 
---tmr.alarm(1,1000,0,function() m:subscribe("hello/world",0, function(conn) print("subscribe success") end) end)
---tmr.alarm(2,1000,1,led)
-tmr.alarm(3,100,0,function() gpio.trig(7, "both", rd1) gpio.trig(5, "both", rd2) gpio.trig(4, "both", rd3) gpio.trig(3, "both", rd4) end)
---tmr.alarm(3,100,0,function() gpio.trig(7, "both", rd1) end)
+tmr.alarm(3,1000,0,function() setup() end)
+
+
+function setup()
+	m:lwt("/lwt", "ESP8266.1 offline", 0, 0)
+
+	m:on("connect", function(con) print ("connected") end)
+	m:on("offline", function(con) print ("offline") end)
+
+	m:on("message", function(conn, topic, data) 
+		print(topic .. ":" ) 
+		if data ~= nil then
+			print(data)
+		end
+		end)
+	gpio.trig(7, "both", rd1) 
+	gpio.trig(5, "both", rd2) 
+	gpio.trig(4, "both", rd3) 
+	gpio.trig(3, "both", rd4)
+end
 
 
 function rd1()
